@@ -1,0 +1,42 @@
+python spark_master_sql.py \
+    --input_green=data/pq/green/2020/*/ \
+    --input_yellow=data/pq/yellow/2020/*/ \
+    --output=data/report-2020
+
+
+#this is how you submit a spark job usaully
+URL="spark://mle-zm-spark.us-west1-a.c.resonant-time-434823-n0.internal:7077"
+
+spark-submit \
+    --master="${URL}" \
+    spark_master_sql.py \
+        --input_green=data/pq/green/2021/*/ \
+        --input_yellow=data/pq/yellow/2021/*/ \
+        --output=data/report-2021 
+
+
+--input_green=gs://mle-zm-spark-data/pq/green/2021/*/ \
+--input_yellow=gs://mle-zm-spark-data/pq/yellow/2021/*/ \
+--output=gs://mle-zm-spark-data/report-2021 
+
+gcloud dataproc jobs submit pyspark \
+    --cluster=de-zm-spark-cluster-m \
+    --region=us-west1 \
+    gs://mle-zm-spark-data/code/spark_master_sql.py \
+    -- \
+        --input_green=gs://mle-zm-spark-data/pq/green/2020/*/ \
+        --input_yellow=gs://mle-zm-spark-data/pq/yellow/2020/*/ \
+        --output=gs://mle-zm-spark-data/report-2020 
+
+
+gcloud dataproc jobs submit pyspark \
+    --cluster=de-zm-spark-cluster-m \
+    --region=us-west1 \
+    --jars=gs://spark-lib/bigquery/spark-bigquery-latest_2.12.jar \
+    gs://mle-zm-spark-data/code/spark_master_bigquery.py \
+    -- \
+        --input_green=gs://mle-zm-spark-data/pq/green/2020/*/ \
+        --input_yellow=gs://mle-zm-spark-data/pq/yellow/2020/*/ \
+        --output=nyc_taxi/report-2020
+
+     

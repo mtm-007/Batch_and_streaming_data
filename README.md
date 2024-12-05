@@ -42,3 +42,15 @@ export PATH="${SPARK_HOME}/bin:${PATH}"
 export PYTHONPATH="${SPARK_HOME}/python/:$PYTHONPATH"
 export PYTHONPATH="${SPARK_HOME}/python/lib/py4j-0.10.9.5-src.zip:$PYTHONPATH"
 ```
+
+#### TO RUN SPARK CLUSTER 
+```
+- insructions can be followed from this docs [https://spark.apache.org/docs/3.5.3/spark-standalone.html]
+- got the the directory where spark is installed, where the (echo $SPARK_HOME) is located, then run this bash script: ./sbin/start-master.sh
+- it will be on port:8080 not port:4040
+- get the URL, replace the (local[*])
+- TO ADD EXCUTORS run: ./sbin/start-worker.sh <master-spark-URL>  # change worker to slave in some versions
+- to the stop the spark cluster
+    run:./sbin/stop-master.sh ...to stop the master node
+    run:./sbin/stop-worker.sh ...to stop the excutor or slave
+```
